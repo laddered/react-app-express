@@ -51,7 +51,7 @@
 }
 
 .category-article {
-  height: 40px;
+  min-height: 40px;
   width: auto;
   background-color: gainsboro;
   border: 1px solid #595959;

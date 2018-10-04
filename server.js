@@ -6,7 +6,7 @@ require('./config/express')(app);
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 app.get('/express_backend', (req, res) => {
-  res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
+  res.send({ express: 'Connected to server.' });
 });
 
 /*Включение сервера mongoDB: sudo systemctl start mongodb

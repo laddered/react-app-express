@@ -11,7 +11,7 @@ class CategoryArticles extends Component {
         if (data.length > 0) {
             categoryTemplate = data.map(function (item, index) {
                 return (
-                    <div key={index}>
+                    <div className="category-article" key={index}>
                         <CategoryArticle data={item}/>
                     </div>
                 )
@@ -37,7 +37,7 @@ class ProductArticles extends Component {
         if (data.length > 0) {
             productTemplate = data.map(function (item, index) {
                 return(
-                    <div key={index}>
+                    <div className='product-article' key={index}>
                         <ProductArticle data={item}/>
                     </div>
                 )
@@ -57,9 +57,9 @@ class CategoryArticle extends Component {
 render() {
     let categoryName = this.props.data.categoryName;
     return(
-        <div className="category-article">
+        <React.Fragment>
             <p className ='category__name'> {categoryName} </p>
-        </div>
+        </React.Fragment>
     )
     }
 }
@@ -71,12 +71,12 @@ class ProductArticle extends Component {
             productSubcategory = this.props.data.productSubcategory,
             productPrice = this.props.data.productPrice;
         return (
-            <div className='product-article'>
+            <React.Fragment>
                 <p className ='product__name'> {productName} </p>
                 <p className ='product__name'> {productCategory} </p>
                 <p className ='product__name'> {productSubcategory} </p>
                 <p className ='product__name'> {productPrice} </p>
-            </div>
+            </React.Fragment>
         )
     }
 }
