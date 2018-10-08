@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {CategoryArticles, ProductArticles} from './article';
+import {CreateCategoryBTN, CreateProductBTN} from './button';
+import {Link} from "react-router-dom";
 
 class MainColumns extends Component {
 
@@ -67,15 +69,14 @@ class MainColumns extends Component {
 
     componentDidMount() {
 
-        /*
+
         this.getCategories()
-            .then(res => this.setState({ categories: res.express }))
+            .then(res => this.setState({ categories: res }))
             .catch(err => console.log(err));
 
         this.getProducts()
-            .then(res => this.setState({ products: res.express }))
+            .then(res => this.setState({ products: res }))
             .catch(err => console.log(err));
-            */
     }
 
 
@@ -101,14 +102,24 @@ class MainColumns extends Component {
     };
 
     render() {
+        let forCreateCatBTN = null,
+            forCreateProdBTN = null;
+
+        forCreateCatBTN = <CreateCategoryBTN/>;
+        forCreateProdBTN = <CreateProductBTN/>;
+
         return (
             <div className="Main-columns">
                 <div className="Category-column">
-                    <p>Category </p>
+                    <Link onClick={this.getCategories} to=''><p>All category</p></Link>
                     <CategoryArticles data={this.state.categories}/>
+                    <div className="admin-btns">
+                        <div>{forCreateCatBTN}</div>
+                        <div>{forCreateProdBTN}</div>
+                    </div>
                 </div>
+
                 <div className="Product-column">
-                    <p>Product </p>
                     <ProductArticles data={this.state.products}/>
                 </div>
             </div>

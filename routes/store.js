@@ -5,6 +5,7 @@ module.exports = function(app){
 
     storeRouter.post('/createProduct', storeCtrl.createProduct);
     storeRouter.get('/getProducts', storeCtrl.getProducts);
+    storeRouter.get('/getSpecificProducts', storeCtrl.getSpecificProducts);
     storeRouter.post('/editProduct', storeCtrl.editProduct);
     storeRouter.delete('/deleteProduct', storeCtrl.deleteProduct);
 

@@ -25,7 +25,10 @@ export default App;
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {Route, Link} from "react-router-dom";
 import {MainColumns} from "./components/column";
+import {AuthWindow} from "./components/auth";
+import {RegWindow} from "./components/reg";
 
 class App extends Component {
 state = {
@@ -57,7 +60,9 @@ state = {
         </header>
 {/* Render the newly fetched data inside of this.state.data  */}
         <p className="App-intro">{this.state.data}</p>
-        <MainColumns/>
+          <Route path="/" component={MainColumns} exact />
+          <Route path="/auth" component={AuthWindow} />
+          <Route path="/reg" component={RegWindow} />
       </div>
     );
   }

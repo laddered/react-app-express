@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import {Link} from "react-router-dom";
 
 class CategoryArticles extends Component {
 
@@ -54,12 +54,33 @@ class ProductArticles extends Component {
 }
 
 class CategoryArticle extends Component {
+    getSpecificProduct = async () => {
+
+        let params = {categoryName: this.props.data.categoryName},
+        url = new URL('/store/getSpecificProducts');
+        url.search = new URLSearchParams(params);
+
+        const response = await fetch(url, {
+            method: "GET",
+            dataType: "JSON",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            }
+        });
+        const body = await response.json();
+
+        if (response.status !== 200) {
+            throw Error(body.message)
+        }
+        return body;
+    };
+
 render() {
     let categoryName = this.props.data.categoryName;
     return(
-        <React.Fragment>
-            <p className ='category__name'> {categoryName} </p>
-        </React.Fragment>
+            <Link className ='category__name' to=''
+                  onClick={this.getSpecificProduct}>
+                {categoryName}</Link>
     )
     }
 }
@@ -72,10 +93,10 @@ class ProductArticle extends Component {
             productPrice = this.props.data.productPrice;
         return (
             <React.Fragment>
-                <p className ='product__name'> {productName} </p>
-                <p className ='product__name'> {productCategory} </p>
-                <p className ='product__name'> {productSubcategory} </p>
-                <p className ='product__name'> {productPrice} </p>
+                <p className ='product__name'>{productName}</p>
+                <p className ='product__category'>{productCategory}</p>
+                <p className ='product__subcategory'>{productSubcategory}</p>
+                <p className ='product__price'>{productPrice}$</p>
             </React.Fragment>
         )
     }
