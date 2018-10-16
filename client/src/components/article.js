@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 
-class CategoryArticles extends Component {
+class CategoryContainer extends Component {
 
     componentDidMount() {}
     render() {
@@ -9,10 +9,13 @@ class CategoryArticles extends Component {
         let categoryTemplate;
 
         if (data.length > 0) {
-            categoryTemplate = data.map(function (item, index) {
+            categoryTemplate = data.map((item, index) => {
                 return (
-                    <div className="category-article" key={index}>
-                        <CategoryArticle data={item}/>
+                    <div className="category-container"
+                         key={index}>
+                        <CategoryArticle
+                            onBodyLoad={this.props.onBodyLoad}
+                            data={item}/>
                     </div>
                 )
             })
@@ -27,17 +30,16 @@ class CategoryArticles extends Component {
     }
 }
 
-class ProductArticles extends Component {
+class ProductContainer extends Component {
 
     componentDidMount() {}
     render() {
         var data = this.props.data;
         var productTemplate;
-
         if (data.length > 0) {
             productTemplate = data.map(function (item, index) {
                 return(
-                    <div className='product-article' key={index}>
+                    <div className='product-container' key={index}>
                         <ProductArticle data={item}/>
                     </div>
                 )
@@ -56,28 +58,31 @@ class ProductArticles extends Component {
 class CategoryArticle extends Component {
     getSpecificProduct = async () => {
 
-        let params = {categoryName: this.props.data.categoryName},
-        url = new URL('/store/getSpecificProducts');
-        url.search = new URLSearchParams(params);
-
-        const response = await fetch(url, {
-            method: "GET",
+        let categoryName = this.props.data.categoryName;
+        const response = await fetch('/store/getSpecificProducts', {
+            method: "POST",
             dataType: "JSON",
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
-            }
+            },
+            body: JSON.stringify({categoryName: categoryName})
         });
         const body = await response.json();
+        console.log(body);
 
         if (response.status !== 200) {
             throw Error(body.message)
         }
-        return body;
+
+        if(typeof this.props.onBodyLoad === 'function') {
+            this.props.onBodyLoad(body);
+        }
     };
 
 render() {
     let categoryName = this.props.data.categoryName;
     return(
+
             <Link className ='category__name' to=''
                   onClick={this.getSpecificProduct}>
                 {categoryName}</Link>
@@ -102,5 +107,5 @@ class ProductArticle extends Component {
     }
 }
 
-export {CategoryArticles, ProductArticles};
+export {CategoryContainer, ProductContainer};
 

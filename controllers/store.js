@@ -1,5 +1,6 @@
 module.exports = function (app) {
 
+    let bodyParser = require('body-parser');
     let Product = require('./../models/product');
     let Category = require('./../models/category');
 
@@ -30,13 +31,13 @@ module.exports = function (app) {
     }
 
     function getSpecificProducts(req, res){
-
-        let params = req.getParameter('categoryName') ;
-        Product.find({productCategory: req.params}, function (err, product) {
+        Product.find({productCategory: req.body.categoryName}, function (err, product) {
             if (err) {console.error(err)}
             else {
                 res.send(product);
-                console.log('Specific products send!')
+                console.log('Specific products send! ' + req.body.categoryName);
+                console.log(product);
+
             }
         })
     }

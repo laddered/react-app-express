@@ -1,6 +1,10 @@
 .App {
-  text-align: center;
-  background-color: aliceblue;
+  text-align: left;
+  background-color: #feffd9;
+}
+
+body {
+    background-color: #feffd9;
 }
 
 .App-logo {
@@ -8,19 +12,22 @@
   height: 80px;
 }
 
-.App-header {
+.Store-header {
   background-color: #222;
-  height: 150px;
-  padding: 20px;
+  padding: 10px;
   color: white;
 }
 
-.App-title {
-  font-size: 1.5em;
+.App-title, .sign-in-btn, .log-in-btn{
+    display: inline-block;
+    font-size: 1.5em;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .App-intro {
   font-size: large;
+    text-align: center;
 }
 
 @keyframes App-logo-spin {
@@ -40,6 +47,41 @@
     vertical-align: top;
 }
 
+.all-cat-link {
+    text-align: center;
+}
+
+a.all-cat-link:link, a.homeLink:link, a.category__name:link {
+    text-decoration: none;
+    display: block;
+}
+
+.sign-in-btn {
+    background-color: #e17113;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+a.sign-in-btn:link, a.log-in-btn:link {
+    text-decoration: none;
+}
+
+a.sign-in-btn:visited, a.log-in-btn:visited {
+    color: white;
+}
+
+.all-cat-link:visited, a.homeLink:visited, a.category__name:visited {
+    color: black;
+}
+
+a.category__name:link {
+    padding: 12px;
+    background-color: #cfcfcf;
+}
+
+a.all-cat-link:link {
+}
+
 .Product-column {
     width: 80%;
     margin-right: 1%;
@@ -48,30 +90,59 @@
     vertical-align: top;
 }
 
-.category-article {
+.category-container {
     width: auto;
-    padding: 15px;
-    background-color: #cfcfcf;
+
     margin-top: 5px;
 }
 
-.category__name {
-
-}
-
-.product-article {
+.product-container {
     height: 150px;
     margin-top: 10px;
     background-color: #cfcfcf;
-    padding: 4px;
+    padding-left: 20px;
+    padding-top: 10px;
+    text-align: center;
 }
 
 .admin-btns {
-    margin-top: 100px;
-
+    margin-top: 20px;
 }
 
 .category-create-btn, .product-create-btn {
-    margin: 5px;
+    background-color: #e7c38c;
+    border: none;
+    margin-top: 5px;
+    padding: 15px;
+    width: 100%;
+}
+
+.reg-window, .auth-window {
+    max-width: 500px;
+    margin: auto;
+    margin-top: 150px;
+    margin-bottom: 100px;
+    padding: 20px;
+    background-color: #cfcfcf;
+    text-align: center;
+}
+
+.input-div {
+    margin-top: 15px;
+}
+
+.input-reg {
     width: 90%;
+    height: 30px;
+    padding-left: 15px;
+}
+
+.submit-btn {
+    margin-top: 15px;
+    height: 45px;
+    min-width: 100px;
+    background-color: #e17113;
+    border: none;
+    color: white;
+    font-size: 20px;
 }
