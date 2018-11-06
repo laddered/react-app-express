@@ -3,10 +3,6 @@
   background-color: #feffd9;
 }
 
-body {
-    background-color: #feffd9;
-}
-
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
@@ -51,7 +47,7 @@ body {
     text-align: center;
 }
 
-a.all-cat-link:link, a.homeLink:link, a.category__name:link {
+a.all-cat-link:link, a.homeLink:link, a.category__name:link, a.reg-auth-link:link {
     text-decoration: none;
     display: block;
 }
@@ -66,12 +62,24 @@ a.sign-in-btn:link, a.log-in-btn:link {
     text-decoration: none;
 }
 
-a.sign-in-btn:visited, a.log-in-btn:visited {
+a.sign-in-btn:visited, a.log-in-btn:visited, a.sign-in-btn, a.log-in-btn {
     color: white;
 }
 
-.all-cat-link:visited, a.homeLink:visited, a.category__name:visited {
+.all-cat-link:visited, a.category__name:visited, a.reg-auth-link:visited, .all-cat-link, a.category__name, a.reg-auth-link {
     color: black;
+}
+
+a.homeLink:link {
+    font-size: 25px;
+    width: 145px;
+    margin: auto;
+    background-color: #222;
+    padding: 10px;
+}
+
+a.homeLink:visited {
+    color: white;
 }
 
 a.category__name:link {
@@ -80,6 +88,9 @@ a.category__name:link {
 }
 
 a.all-cat-link:link {
+    font-size: 20px;
+    margin: auto;
+    width: 125px;
 }
 
 .Product-column {
@@ -127,14 +138,20 @@ a.all-cat-link:link {
     text-align: center;
 }
 
-.input-div {
+.input-div, a.reg-auth-link:link {
     margin-top: 15px;
 }
 
-.input-reg {
-    width: 90%;
-    height: 30px;
+.input-reg, .input-reg-invalid {
+    width: 100%;
     padding-left: 15px;
+    box-sizing: border-box;
+    height: 30px;
+}
+
+.input-reg-invalid {
+    border-color: #ff9f84;
+    background-color: #ffecc2;
 }
 
 .submit-btn {
@@ -145,4 +162,30 @@ a.all-cat-link:link {
     border: none;
     color: white;
     font-size: 20px;
+    border-radius: 4px;
+}
+
+.submit-btn:disabled {
+    background-color: #e1b58e;
+}
+
+.submit-btn:hover{
+    cursor: pointer;
+}
+
+.input-error {
+    background-color: #ffde71;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+}
+
+.input-error-none {
+display: none;
+}
+
+.input-error-warning {
+    background-color: #ff8484;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }

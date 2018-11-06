@@ -1,9 +1,11 @@
 module.exports = function(app){
-    var express = require('express');
-    var userRouter = express.Router();
-    var userCtrl = require('../controllers/user')(app);
+    let express = require('express');
+    let userRouter = express.Router();
+    let userCtrl = require('../controllers/user')(app);
+    let tokenCheck = require('../tokenCheck');
 
     userRouter.get('/getMe', userCtrl.getMe);
+    userRouter.post('/getMyLogin', tokenCheck, userCtrl.getMyLogin);
     userRouter.post('/editMe', userCtrl.editMe);
     userRouter.delete('/deleteMe', userCtrl.deleteMe);
 

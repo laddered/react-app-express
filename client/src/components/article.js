@@ -68,7 +68,7 @@ class CategoryArticle extends Component {
             body: JSON.stringify({categoryName: categoryName})
         });
         const body = await response.json();
-        console.log(body);
+        console.log('Category accepted');
 
         if (response.status !== 200) {
             throw Error(body.message)

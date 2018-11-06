@@ -36,8 +36,6 @@ module.exports = function (app) {
             else {
                 res.send(product);
                 console.log('Specific products send! ' + req.body.categoryName);
-                console.log(product);
-
             }
         })
     }

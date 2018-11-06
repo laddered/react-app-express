@@ -1,7 +1,7 @@
 module.exports = function(app){
-    var express = require('express');
-    var storeRouter = express.Router();
-    var storeCtrl = require('../controllers/store')(app);
+    let express = require('express');
+    let storeRouter = express.Router();
+    let storeCtrl = require('../controllers/store')(app);
 
     storeRouter.post('/createProduct', storeCtrl.createProduct);
     storeRouter.get('/getProducts', storeCtrl.getProducts);

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 
-class CreateCategoryBTN extends Component {
+class CreateCategoryAndProductBTN extends Component {
 
     createCat = () => {
         fetch("/store/createCategory", {
@@ -22,19 +22,6 @@ class CreateCategoryBTN extends Component {
             })
     };
 
-    componentDidMount() {}
-    render() {
-        return (
-            <button className='category-create-btn'
-                    onClick={this.createCat}>
-                Create category
-            </button>
-        )
-    }
-}
-
-class CreateProductBTN extends Component {
-
     createProd = () => {
         fetch("/store/createProduct", {
             method: "POST",
@@ -54,16 +41,21 @@ class CreateProductBTN extends Component {
             })
     };
 
-    componentDidMount() {}
     render() {
         return (
-            <button className='product-create-btn'
-                    onClick={this.createProd}>
-                Create product
+            <React.Fragment>
+            <button className='category-create-btn'
+                    onClick={this.createCat}>
+                Create category
             </button>
+                <button className='product-create-btn'
+                        onClick={this.createProd}>
+                    Create product
+                </button>
+            </React.Fragment>
         )
     }
 }
 
-export {CreateCategoryBTN, CreateProductBTN};
+export {CreateCategoryAndProductBTN};
 

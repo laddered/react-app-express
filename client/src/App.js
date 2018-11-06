@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import {StoreHeader} from "./components/store-header";
 import {Route} from "react-router-dom";
-import {AuthWindow} from "./components/auth";
+import {AuthWindow} from "./components/authz";
 import {RegWindow} from "./components/reg";
 
 class App extends Component {

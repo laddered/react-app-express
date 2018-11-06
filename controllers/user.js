@@ -6,6 +6,16 @@ module.exports = function (app) {
 
     }
 
+    function getMyLogin(req, res) {
+        console.log(req.decodedWT.id);
+        if (req.decodedWT.id) {
+            User.findById(req.decodedWT.id, function (err, user) {
+                res.send({login:user.login});
+            })
+        }
+        else {res.status(401).send()}
+    }
+
     function editMe(req, res){
 
     }
@@ -16,6 +26,7 @@ module.exports = function (app) {
 
     return {
         getMe: getMe,
+        getMyLogin: getMyLogin,
         editMe: editMe,
         deleteMe: deleteMe
     }

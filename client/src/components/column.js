@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {CategoryContainer, ProductContainer} from './article';
-import {CreateCategoryBTN, CreateProductBTN} from './button';
+import {CreateCategoryAndProductBTN} from './creactCatAndProdBTN';
 import {Link} from "react-router-dom";
 
 class MainColumns extends Component {
@@ -55,11 +55,9 @@ class MainColumns extends Component {
     };
 
     render() {
-        let forCreateCatBTN = null,
-            forCreateProdBTN = null;
+        let forCreateCatAndProdBTN = null;
 
-        forCreateCatBTN = <CreateCategoryBTN/>;
-        forCreateProdBTN = <CreateProductBTN/>;
+        forCreateCatAndProdBTN = <CreateCategoryAndProductBTN/>;
 
         return (
             <div className="Main-columns">
@@ -70,8 +68,7 @@ class MainColumns extends Component {
                         data={this.state.categories}
                     />
                     <div className="admin-btns">
-                        <div>{forCreateCatBTN}</div>
-                        <div>{forCreateProdBTN}</div>
+                        <div>{forCreateCatAndProdBTN}</div>
                     </div>
                 </div>
 

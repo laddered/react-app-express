@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 
-class RegWindow extends Component {
+class EditWindow extends Component {
     state = {
         login: '',
         email: '',
@@ -19,8 +19,7 @@ class RegWindow extends Component {
         let regExp = /^[A-Za-z]+[A-Za-z0-9]+$/;
         this.setState({
             [e.target.name]: e.target.value,
-            loginValid: regExp.test(e.target.value),
-            loginMatch: false
+            loginValid: regExp.test(e.target.value)
         });
     };
 
@@ -66,13 +65,7 @@ class RegWindow extends Component {
         console.log(body);
 
         if (response.status !== 200) {
-            if (response.status === 409) {
-                this.setState({
-                    loginMatch: true
-                })
-            } else {
-                throw Error(body.message)
-            }
+            throw Error(body.message)
         }
         else {
             localStorage.setItem('tokenReactStore', body.token);
@@ -85,43 +78,43 @@ class RegWindow extends Component {
         return(
             <div className="reg-window">
                 <Link to='/' className="homeLink"><strong>ReactStore</strong></Link>
-                    <div className='input-div'>
-                        <input name='login'
-                            className={this.state.loginValid ? 'input-reg' : 'input-reg-invalid' } type='text' maxLength='15'
-                               placeholder='Enter your login'
-                               title="Must contain one word in the Latin alphabet without spaces, not starting with a number"
-                               onChange={e => this.loginValidate(e)}
-                               value={this.state.login}
-                        />
-                    </div>
+                <div className='input-div'>
+                    <input name='login'
+                           className={this.state.loginValid ? 'input-reg' : 'input-reg-invalid' } type='text' maxLength='15'
+                           placeholder='Enter your login'
+                           title="Must contain one word in the Latin alphabet without spaces, not starting with a number"
+                           onChange={e => this.loginValidate(e)}
+                           value={this.state.login}
+                    />
+                </div>
                 <div className={this.state.loginMatch ? 'input-error-warning' : 'input-error-none' }>This login already in use by another user!</div>
                 <div className={this.state.loginValid ? 'input-error-none' : 'input-error' }>Invalid login</div>
 
-                    <div className='input-div'>
-                        <input name='email'
-                            className={this.state.emailValid ? 'input-reg' : 'input-reg-invalid' } type='email' maxLength='30'
-                               placeholder='Enter your email'
-                               title="The left part indicates the name of the mailbox @ the right part of the address specifies the domain name of the server on which the mailbox is located"
-                               onChange={e => this.emailValidate(e)}
-                               value={this.state.email}
-                               />
-                    </div>
+                <div className='input-div'>
+                    <input name='email'
+                           className={this.state.emailValid ? 'input-reg' : 'input-reg-invalid' } type='email' maxLength='30'
+                           placeholder='Enter your email'
+                           title="The left part indicates the name of the mailbox @ the right part of the address specifies the domain name of the server on which the mailbox is located"
+                           onChange={e => this.emailValidate(e)}
+                           value={this.state.email}
+                    />
+                </div>
                 <div className={this.state.emailValid ? 'input-error-none' : 'input-error' }>Invalid email</div>
 
                 <div className='input-div'>
-                        <input name='password'
-                            className={this.state.passwordValid ? 'input-reg' : 'input-reg-invalid' } type='password' maxLength='15'
-                               placeholder='Enter your password'
-                               title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                               onChange={e => this.passwordValidate(e)}
-                               value={this.state.password}
-                               />
-                    </div>
+                    <input name='password'
+                           className={this.state.passwordValid ? 'input-reg' : 'input-reg-invalid' } type='password' maxLength='15'
+                           placeholder='Enter your password'
+                           title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                           onChange={e => this.passwordValidate(e)}
+                           value={this.state.password}
+                    />
+                </div>
                 <div className={this.state.passwordValid ? 'input-error-none' : 'input-error' }>Invalid password</div>
 
                 <div className='input-div'>
                     <input name='passwordConfirm'
-                        className={this.state.passwordConfirmValid ? 'input-reg' : 'input-reg-invalid' } type='password' maxLength='15'
+                           className={this.state.passwordConfirmValid ? 'input-reg' : 'input-reg-invalid' } type='password' maxLength='15'
                            placeholder='Enter your password again'
                            title="Re-enter the password for confirmation"
                            onChange={e => this.passwordConfirmValidate(e)}
@@ -140,4 +133,4 @@ class RegWindow extends Component {
     };
 }
 
-export {RegWindow};
+export {EditWindow};
