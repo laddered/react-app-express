@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Route} from "react-router-dom";
 import {MainColumns} from "./column";
-import {AuthWindow} from "./authz";
+import {AuthzWindow} from "./authz";
 import {RegWindow} from "./reg";
 import {EditWindow} from "./userEdit";
 import {RegAndAuthzBTN} from "./reg-authzHeaderBTN";
@@ -10,7 +10,9 @@ import {UserHeaderBTN} from "./userHeaderBTN";
 class StoreHeader extends Component {
     state = {
         user: null,
-        data: 'No server connection.'
+        data: 'No server connection.',
+        token: false,
+        admin: false
     };
 
     componentDidMount() {
@@ -36,6 +38,9 @@ class StoreHeader extends Component {
 
     findUser = async () => {
         if (localStorage.getItem('tokenReactStore') !== null) {
+            this.setState({
+                token:true
+            });
         let data = localStorage.getItem('tokenReactStore');
         const response = await fetch('/user/getMyLogin', {
             method: "POST",
@@ -47,17 +52,41 @@ class StoreHeader extends Component {
         });
         const body = await response.json();
 
-        if (response.status !== 200) {
-            throw Error(body.message)
+            switch (response.status) {
+                case 500:
+                    localStorage.removeItem('tokenReactStore');
+                    console.log(body.message);
+                    break;
+                case 200:
+                    return body;
+                default:
+                    throw Error(body.message);
+            }
         }
-        return body;
+        else {
+            this.setState({
+                token:false
+            });
         }
     };
 
+    tokenDelete = ()=>{
+        this.setState({
+            token:false
+        })
+    };
+
+    updateAdminInfo = (admin)=>{
+        this.setState({admin})
+    };
+
     render() {
+
         let forMainBTNS = null;
         if (this.state.user) {
-            forMainBTNS = <UserHeaderBTN/>;
+            forMainBTNS = <UserHeaderBTN
+                user={this.state.user}
+            findUser={this.tokenDelete}/>;
         }
         else {
             forMainBTNS = <RegAndAuthzBTN/>;
@@ -70,8 +99,10 @@ class StoreHeader extends Component {
                     {forMainBTNS}
                 </header>
                 <p className="App-intro">{this.state.data}</p>
-                <Route path="/" component={MainColumns} exact/>
-                <Route path="/auth" component={AuthWindow}/>
+                <Route
+                    render={()=><MainColumns admin={this.state.admin}/>}
+                    exact path="/"/>
+                <Route path="/auth" component={AuthzWindow}/>
                 <Route path="/reg" component={RegWindow}/>
                 <Route path="/userEdit" component={EditWindow}/>
             </div>

@@ -5,7 +5,9 @@ function tokenCheck(req, res, next) {
     let configWT = require('././configWebTokensJSON');
 
     jwt.verify(token, configWT.secret, function (err, decoded) {
-        if (err) {return res.status(500).send(null)}
+        if (err) {
+            return res.status(500).send(JSON.stringify({message: 'Invalid or expired token'}))
+        }
         else {
             req.decodedWT = decoded;
             console.log('to next');

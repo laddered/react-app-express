@@ -58,4 +58,3 @@ class CreateCategoryAndProductBTN extends Component {
 }
 
 export {CreateCategoryAndProductBTN};
-

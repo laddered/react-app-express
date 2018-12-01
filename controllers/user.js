@@ -7,7 +7,6 @@ module.exports = function (app) {
     }
 
     function getMyLogin(req, res) {
-        console.log(req.decodedWT.id);
         if (req.decodedWT.id) {
             User.findById(req.decodedWT.id, function (err, user) {
                 res.send({login:user.login});

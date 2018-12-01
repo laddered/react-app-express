@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
+import {DeleteEditBTNCat, DeleteEditBTNProduct} from "./delete-EditBTN";
 
 class CategoryContainer extends Component {
 
@@ -15,7 +16,9 @@ class CategoryContainer extends Component {
                          key={index}>
                         <CategoryArticle
                             onBodyLoad={this.props.onBodyLoad}
-                            data={item}/>
+                            data={item}
+                            admin={this.props.admin}
+                        />
                     </div>
                 )
             })
@@ -34,13 +37,17 @@ class ProductContainer extends Component {
 
     componentDidMount() {}
     render() {
-        var data = this.props.data;
-        var productTemplate;
+        let data = this.props.data;
+        let admin = this.props.admin;
+        let productTemplate;
         if (data.length > 0) {
             productTemplate = data.map(function (item, index) {
                 return(
                     <div className='product-container' key={index}>
-                        <ProductArticle data={item}/>
+                        <ProductArticle
+                            data={item}
+                            admin={admin}
+                        />
                     </div>
                 )
             })
@@ -80,12 +87,18 @@ class CategoryArticle extends Component {
     };
 
 render() {
-    let categoryName = this.props.data.categoryName;
+    let categoryName = this.props.data.categoryName,
+        forDeleteEditBTN = null;
+    if (this.props.admin === false) {
+        forDeleteEditBTN = <DeleteEditBTNCat categoryName={this.props.data.categoryName}/>
+    }
     return(
-
+        <React.Fragment>
             <Link className ='category__name' to=''
                   onClick={this.getSpecificProduct}>
                 {categoryName}</Link>
+            {forDeleteEditBTN}
+        </React.Fragment>
     )
     }
 }
@@ -95,13 +108,20 @@ class ProductArticle extends Component {
             let productName = this.props.data.productName,
             productCategory = this.props.data.productCategory,
             productSubcategory = this.props.data.productSubcategory,
-            productPrice = this.props.data.productPrice;
+            productPrice = this.props.data.productPrice,
+                forDeleteEditBTN = null;
+        if (this.props.admin === false) {
+            forDeleteEditBTN = <DeleteEditBTNProduct productName={this.props.data.productName}
+                                              productCategory={this.props.data.productCategory}
+                                              productSubcategory={this.props.data.productSubcategory}
+                                              productPrice={this.props.data.productPrice}/>}
         return (
             <React.Fragment>
                 <p className ='product__name'>{productName}</p>
                 <p className ='product__category'>{productCategory}</p>
                 <p className ='product__subcategory'>{productSubcategory}</p>
                 <p className ='product__price'>{productPrice}$</p>
+                {forDeleteEditBTN}
             </React.Fragment>
         )
     }

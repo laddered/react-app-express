@@ -1,6 +1,6 @@
 module.exports = function(app, jwt, configWT){
-    authRouter = require('../routes/auth')(app, jwt, configWT);
-    app.use('/auth',authRouter);
+    authzRouter = require('../routes/authz')(app, jwt, configWT);
+    app.use('/authz',authzRouter);
     userRouter = require('../routes/user')(app);
     app.use('/user',userRouter);
     storeRouter = require('../routes/store')(app);

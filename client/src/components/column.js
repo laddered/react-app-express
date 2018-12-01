@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {CategoryContainer, ProductContainer} from './article';
-import {CreateCategoryAndProductBTN} from './creactCatAndProdBTN';
+import {CreateCategoryAndProductBTN} from './createCat-ProdBTN';
 import {Link} from "react-router-dom";
 
 class MainColumns extends Component {
@@ -56,9 +56,9 @@ class MainColumns extends Component {
 
     render() {
         let forCreateCatAndProdBTN = null;
-
-        forCreateCatAndProdBTN = <CreateCategoryAndProductBTN/>;
-
+        if (this.props.admin === false) {
+            forCreateCatAndProdBTN = <CreateCategoryAndProductBTN/>;
+        }
         return (
             <div className="Main-columns">
                 <div className="Category-column">
@@ -66,6 +66,7 @@ class MainColumns extends Component {
                     <CategoryContainer
                         onBodyLoad={this.onBodyLoad}
                         data={this.state.categories}
+                        admin={this.props.admin}
                     />
                     <div className="admin-btns">
                         <div>{forCreateCatAndProdBTN}</div>
@@ -73,7 +74,10 @@ class MainColumns extends Component {
                 </div>
 
                 <div className="Product-column">
-                    <ProductContainer data={this.state.products}/>
+                    <ProductContainer
+                        data={this.state.products}
+                        admin={this.props.admin}
+                    />
                 </div>
             </div>
         );

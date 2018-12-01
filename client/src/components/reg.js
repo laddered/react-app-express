@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
+import ReactModal from 'react-modal';
 
 class RegWindow extends Component {
     state = {
@@ -12,7 +13,8 @@ class RegWindow extends Component {
         passwordValid: false,
         passwordConfirmValid: false,
         submitDisable:true,
-        loginMatch:false
+        loginMatch:false,
+        modalOpen:false
     };
 
     loginValidate = (e)=>{
@@ -49,18 +51,17 @@ class RegWindow extends Component {
     };
 
     onSubmit = async () => {
-        let data = {
-            login:this.state.login,
-            email:this.state.email,
-            password:this.state.password
-        };
-        const response = await fetch('/auth/createUser', {
+        const response = await fetch('/authz/createUser', {
             method: "POST",
             dataType: "JSON",
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify({
+                login:this.state.login,
+                email:this.state.email,
+                password:this.state.password
+            })
         });
         const body = await response.json();
         console.log(body);
@@ -75,9 +76,15 @@ class RegWindow extends Component {
             }
         }
         else {
-            localStorage.setItem('tokenReactStore', body.token);
-            console.log('User created!');
+            this.setState({
+                modalOpen:true
+            });
+            console.log(body.message);
         }
+    };
+
+    modalOk = ()=>{
+        this.props.history.push('/auth');
     };
 
     render(){
@@ -135,6 +142,16 @@ class RegWindow extends Component {
                         onClick={this.onSubmit}
                 ><strong>Sign up!</strong></button>
                 <div><Link to='/auth' className="reg-auth-link">I already have an account</Link></div>
+                <ReactModal isOpen={this.state.modalOpen}
+                            className="regModalContent"
+                            role="dialog"
+                            overlayClassName="regModalOverlay"
+                            ariaHideApp={false}
+                            bodyOpenClassName="regModalBodyOpen">
+                    <strong>Account has been registered!</strong>
+                    <br/>
+                    <button className='submit-btn' onClick={this.modalOk}>Ok</button>
+                </ReactModal>
             </div>
         );
     };
