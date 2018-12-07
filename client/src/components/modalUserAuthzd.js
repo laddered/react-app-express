@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 
-class modalUserAuthzd extends Component {
+class ModalUserAuthzd extends Component {
 
     state = {
         user: null,
@@ -30,4 +30,4 @@ class modalUserAuthzd extends Component {
     };
 }
 
-export {modalUserAuthzd};
+export {ModalUserAuthzd};

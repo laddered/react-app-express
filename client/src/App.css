@@ -189,7 +189,7 @@ display: none;
 }
 
 .input-error-warning {
-    background-color: rgba(254, 246, 255, 0.5);
+    background-color: rgb(255, 133, 115);
     padding-top: 5px;
     padding-bottom: 5px;
 }

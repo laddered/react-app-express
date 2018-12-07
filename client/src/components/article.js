@@ -90,7 +90,7 @@ render() {
     let categoryName = this.props.data.categoryName,
         forDeleteEditBTN = null;
     if (this.props.admin === false) {
-        forDeleteEditBTN = <DeleteEditBTNCat categoryName={this.props.data.categoryName}/>
+        forDeleteEditBTN = <DeleteEditBTNCat/>
     }
     return(
         <React.Fragment>
@@ -111,10 +111,7 @@ class ProductArticle extends Component {
             productPrice = this.props.data.productPrice,
                 forDeleteEditBTN = null;
         if (this.props.admin === false) {
-            forDeleteEditBTN = <DeleteEditBTNProduct productName={this.props.data.productName}
-                                              productCategory={this.props.data.productCategory}
-                                              productSubcategory={this.props.data.productSubcategory}
-                                              productPrice={this.props.data.productPrice}/>}
+            forDeleteEditBTN = <DeleteEditBTNProduct/>}
         return (
             <React.Fragment>
                 <p className ='product__name'>{productName}</p>

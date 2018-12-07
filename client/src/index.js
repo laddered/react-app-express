@@ -4,31 +4,13 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter } from 'react-router-dom';
-
-let AppContext = React.createContext();
-
-class AppProvider extends Component {
-
-    state = {
-       isAdmin:false
-    };
-
-    render(){
-        return (
-            <AppContext.Provider value={{
-                state: this.state
-            }}>
-                {this.props.children}
-            </AppContext.Provider>
-        )
-    }
-}
+import {AppProvider} from "./components/appProvider";
 
 ReactDOM.render((
-    <AppProvider>
     <BrowserRouter>
+        <AppProvider>
         <App />
+        </AppProvider>
     </BrowserRouter>
-    </AppProvider>
 ), document.getElementById('root'));
 registerServiceWorker();

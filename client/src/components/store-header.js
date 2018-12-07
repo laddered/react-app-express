@@ -6,6 +6,8 @@ import {RegWindow} from "./reg";
 import {EditWindow} from "./userEdit";
 import {RegAndAuthzBTN} from "./reg-authzHeaderBTN";
 import {UserHeaderBTN} from "./userHeaderBTN";
+import {AppContext} from "./appProvider";
+import {ModalCatEdit} from "./modalCat-ProdEdit";
 
 class StoreHeader extends Component {
     state = {
@@ -94,17 +96,24 @@ class StoreHeader extends Component {
 
         return (
             <div className="App">
-                <header className="Store-header">
-                    <h1 className="App-title">Welcome to ReactStore</h1>
-                    {forMainBTNS}
-                </header>
-                <p className="App-intro">{this.state.data}</p>
-                <Route
-                    render={()=><MainColumns admin={this.state.admin}/>}
-                    exact path="/"/>
-                <Route path="/auth" component={AuthzWindow}/>
-                <Route path="/reg" component={RegWindow}/>
-                <Route path="/userEdit" component={EditWindow}/>
+                <AppContext.Consumer>
+                    {(context) =>(
+                        <React.Fragment>
+                            <header className="Store-header">
+                                <h1 className="App-title">Welcome to ReactStore</h1>
+                                {forMainBTNS}
+                            </header>
+                            <p className="App-intro">{this.state.data}</p>
+                            <Route
+                                render={()=><MainColumns admin={context.state.isAdmin}/>}
+                                exact path="/"/>
+                            <Route path="/auth" component={AuthzWindow}/>
+                            <Route path="/reg" component={RegWindow}/>
+                            <Route path="/userEdit" component={EditWindow}/>
+                            <ModalCatEdit catEditModalOpen={context.state.catEditModalOpen}/>
+                        </React.Fragment>
+                    )}
+                </AppContext.Consumer>
             </div>
         )
     }
