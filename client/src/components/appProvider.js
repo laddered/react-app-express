@@ -7,25 +7,21 @@ class AppProvider extends Component {
     state = {
         isAdmin:false,
         catEditModalOpen:false,
+        editingCatName:null,
         catDeleteModalOpen:false,
         prodEditModalOpen:false,
-        prodDeleteModalOpen:false,
+        editingProdName:null,
+        prodDeleteModalOpen:false
     };
 
     render(){
         return (
             <AppContext.Provider value={{
                 state: this.state,
-                actions: {
-                    catEditModalOpen: ()=>{
-                        this.setState({
-                            catEditModalOpen:true
-                        })
-                    }
-                }
-            }}>
-                {this.props.children}
-            </AppContext.Provider>
+                openCatEdit:()=>{
+                    this.setState({catEditModalOpen:true})}
+            }}
+                                 children={this.props.children}/>
         )
     }
 }

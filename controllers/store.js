@@ -1,8 +1,9 @@
 module.exports = function (app) {
 
-    let bodyParser = require('body-parser');
-    let Product = require('./../models/product');
-    let Category = require('./../models/category');
+    let bodyParser = require('body-parser'),
+    Product = require('./../models/product'),
+    Category = require('./../models/category'),
+    User = require('./../models/user');
 
     function createProduct(req, res){
 
@@ -72,12 +73,23 @@ module.exports = function (app) {
     }
 
     function editCategory(req, res){
+        User.findById(req.decodedWT, (err, user)=>{
+            if (user.isAdmin){
 
+                Category.find({categoryName:req.body.oldCatName}, (err, category)=>{
+                    if(category){res.status(409).send()}
+                    else {
+
+                    }
+                })
+            }
+            else {
+                res.status(501).send('User is not admin!')
+            }
+        });
     }
 
-    function deleteCategory(req, res){
-
-    }
+    function deleteCategory(req, res){}
 
     return {
         createProduct: createProduct,

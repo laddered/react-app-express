@@ -6,15 +6,23 @@ import {RegWindow} from "./reg";
 import {EditWindow} from "./userEdit";
 import {RegAndAuthzBTN} from "./reg-authzHeaderBTN";
 import {UserHeaderBTN} from "./userHeaderBTN";
-import {AppContext} from "./appProvider";
-import {ModalCatEdit} from "./modalCat-ProdEdit";
+import {ModalCatEdit, ModalCatDelete, ModalProdEdit, ModalProdDelete} from "./modalCat-ProdEdit";
 
+//todo вставить в стейты все модули
 class StoreHeader extends Component {
     state = {
         user: null,
         data: 'No server connection.',
         token: false,
-        admin: false
+        admin: false,
+        catEditModalOpen: false,
+        catDeleteModalOpen: false,
+        catEditName: '',
+        prodEditModalOpen: false,
+        prodDeleteModalOpen: false,
+        prodEditName: '',
+        prodEditCat: '',
+        prodEditPrice: '',
     };
 
     componentDidMount() {
@@ -23,8 +31,9 @@ class StoreHeader extends Component {
             .catch(err => console.log(err));
 
         this.findUser()
-            .then(res => this.setState({user: res.login}))
+            .then(res => this.setState({user: res.login, admin: res.isAdmin}))
             .catch(err => console.log(err));
+
     }
 
     callBackendAPI = async () => {
@@ -66,20 +75,27 @@ class StoreHeader extends Component {
             }
         }
         else {
-            this.setState({
-                token:false
-            });
+            this.setState({token:false});
         }
     };
 
     tokenDelete = ()=>{
-        this.setState({
-            token:false
-        })
+        this.setState({token:false, user:null, admin:false});
     };
 
-    updateAdminInfo = (admin)=>{
-        this.setState({admin})
+    catEditModalOpen = (catName)=>{
+        this.setState({catEditName:catName});
+        this.setState({catEditModalOpen:true})
+    };
+
+    catEditModalClose = ()=>{
+        this.setState({catEditName:''});
+        this.setState({catEditModalOpen:false})
+    };
+
+    catDeleteModalOpen = (catName)=>{
+        this.setState({catEditName:catName});
+        this.setState({catEditModalOpen:true})
     };
 
     render() {
@@ -88,7 +104,17 @@ class StoreHeader extends Component {
         if (this.state.user) {
             forMainBTNS = <UserHeaderBTN
                 user={this.state.user}
-            findUser={this.tokenDelete}/>;
+                tokenDelete={this.tokenDelete}/>;
+        }
+        else {
+            forMainBTNS = <RegAndAuthzBTN/>;
+        }
+
+        let forModals =null;
+        if (this.state.admin) {
+            forModals = <React.Fragment>
+
+            </React.Fragment>;
         }
         else {
             forMainBTNS = <RegAndAuthzBTN/>;
@@ -96,8 +122,6 @@ class StoreHeader extends Component {
 
         return (
             <div className="App">
-                <AppContext.Consumer>
-                    {(context) =>(
                         <React.Fragment>
                             <header className="Store-header">
                                 <h1 className="App-title">Welcome to ReactStore</h1>
@@ -105,15 +129,17 @@ class StoreHeader extends Component {
                             </header>
                             <p className="App-intro">{this.state.data}</p>
                             <Route
-                                render={()=><MainColumns admin={context.state.isAdmin}/>}
+                                render={()=><MainColumns admin={this.state.admin}
+                                                         catEditModalOpen={this.catEditModalOpen}/>}
                                 exact path="/"/>
                             <Route path="/auth" component={AuthzWindow}/>
                             <Route path="/reg" component={RegWindow}/>
                             <Route path="/userEdit" component={EditWindow}/>
-                            <ModalCatEdit catEditModalOpen={context.state.catEditModalOpen}/>
+                            <ModalCatEdit catEditModalOpen={this.state.catEditModalOpen}
+                                          catEditName={this.state.catEditName}
+                                          catEditModalClose={this.catEditModalClose}
+                                          token={this.state.token}/>
                         </React.Fragment>
-                    )}
-                </AppContext.Consumer>
             </div>
         )
     }

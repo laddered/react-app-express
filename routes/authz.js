@@ -5,6 +5,7 @@ module.exports = function(app, jwt, configWT){
 
     authzRouter.post('/createUser', authzCtrl.createUser);
     authzRouter.post('/signIn', authzCtrl.signIn);
+    authzRouter.post('/createAdmin', authzCtrl.createAdmin);
 
     return authzRouter;
 };

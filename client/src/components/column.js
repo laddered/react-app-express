@@ -56,7 +56,7 @@ class MainColumns extends Component {
 
     render() {
         let forCreateCatAndProdBTN = null;
-        if (this.props.admin === false) {
+        if (this.props.admin === true) {
             forCreateCatAndProdBTN = <CreateCategoryAndProductBTN/>;
         }
         return (
@@ -67,6 +67,7 @@ class MainColumns extends Component {
                         onBodyLoad={this.onBodyLoad}
                         data={this.state.categories}
                         admin={this.props.admin}
+                        catEditModalOpen={this.props.catEditModalOpen}
                     />
                     <div className="admin-btns">
                         <div>{forCreateCatAndProdBTN}</div>

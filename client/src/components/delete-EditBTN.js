@@ -3,8 +3,9 @@ import {AppContext} from "./appProvider";
 
 class DeleteEditBTNCat extends Component {
 
-    openEditModal = ()=>{
 
+    openEditModal = ()=>{
+        this.props.catEditModalOpen(this.props.categoryName)
     };
 
     openDeleteModal = ()=>{
@@ -12,8 +13,6 @@ class DeleteEditBTNCat extends Component {
 
     render() {
         return (
-            <AppContext.Consumer>
-                {(context) =>(
 
                     <React.Fragment>
                         <button className='editCatBTN'
@@ -26,8 +25,6 @@ class DeleteEditBTNCat extends Component {
                         </button>
                     </React.Fragment>
 
-                )}
-            </AppContext.Consumer>
         )}
 }
 

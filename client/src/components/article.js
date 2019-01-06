@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import {DeleteEditBTNCat, DeleteEditBTNProduct} from "./delete-EditBTN";
+import {AppContext} from "./appProvider";
 
 class CategoryContainer extends Component {
 
@@ -14,11 +15,20 @@ class CategoryContainer extends Component {
                 return (
                     <div className="category-container"
                          key={index}>
+
+                        <AppContext.Consumer>
+                            {(context) =>(
+
                         <CategoryArticle
                             onBodyLoad={this.props.onBodyLoad}
                             data={item}
                             admin={this.props.admin}
+                            catEditModalOpen={this.props.catEditModalOpen}
                         />
+
+                            )}
+                        </AppContext.Consumer>
+
                     </div>
                 )
             })
@@ -89,8 +99,9 @@ class CategoryArticle extends Component {
 render() {
     let categoryName = this.props.data.categoryName,
         forDeleteEditBTN = null;
-    if (this.props.admin === false) {
-        forDeleteEditBTN = <DeleteEditBTNCat/>
+    if (this.props.admin === true) {
+        forDeleteEditBTN = <DeleteEditBTNCat catEditModalOpen={this.props.catEditModalOpen}
+                                             categoryName={this.props.data.categoryName}/>
     }
     return(
         <React.Fragment>
@@ -110,7 +121,7 @@ class ProductArticle extends Component {
             productSubcategory = this.props.data.productSubcategory,
             productPrice = this.props.data.productPrice,
                 forDeleteEditBTN = null;
-        if (this.props.admin === false) {
+        if (this.props.admin === true) {
             forDeleteEditBTN = <DeleteEditBTNProduct/>}
         return (
             <React.Fragment>

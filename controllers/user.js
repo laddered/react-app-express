@@ -9,7 +9,7 @@ module.exports = function (app) {
     function getMyLogin(req, res) {
         if (req.decodedWT.id) {
             User.findById(req.decodedWT.id, function (err, user) {
-                res.send({login:user.login});
+                res.send({login:user.login, isAdmin:user.isAdmin});
             })
         }
         else {res.status(401).send()}

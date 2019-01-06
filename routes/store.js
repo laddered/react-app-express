@@ -2,6 +2,7 @@ module.exports = function(app){
     let express = require('express');
     let storeRouter = express.Router();
     let storeCtrl = require('../controllers/store')(app);
+    let tokenCheck = require('../tokenCheck');
 
     storeRouter.post('/createProduct', storeCtrl.createProduct);
     storeRouter.get('/getProducts', storeCtrl.getProducts);
@@ -9,10 +10,10 @@ module.exports = function(app){
     storeRouter.post('/editProduct', storeCtrl.editProduct);
     storeRouter.delete('/deleteProduct', storeCtrl.deleteProduct);
 
-    storeRouter.post('/createCategory', storeCtrl.createCategory);
+    storeRouter.post('/createCategory', tokenCheck, storeCtrl.createCategory);
     storeRouter.get('/getCategories', storeCtrl.getCategories);
-    storeRouter.post('/editCategory', storeCtrl.editCategory);
-    storeRouter.delete('/deleteCategory', storeCtrl.deleteCategory);
+    storeRouter.post('/editCategory', tokenCheck, storeCtrl.editCategory);
+    storeRouter.delete('/deleteCategory', tokenCheck, storeCtrl.deleteCategory);
 
     return storeRouter;
 };

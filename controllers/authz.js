@@ -10,7 +10,8 @@ module.exports = function (app, jwt, configWT) {
                 let newUser = User({
                     login: param.login,
                     email: param.email,
-                    password: param.password
+                    password: param.password,
+                    isAdmin:false
                 });
                 newUser.save(function (err) {
                     if (err) return console.error(err);
@@ -51,8 +52,42 @@ module.exports = function (app, jwt, configWT) {
         });
     }
 
+    function createAdmin(req, res) {
+        let param = req.body;
+        User.findOne({ isAdmin: true }, function (err, user) {
+
+            if (param.adminSecret !== 'f1f55d'){
+                if (user === null) {
+                    let newUser = User({
+                        login: 'reactStoreAdmin',
+                        email: param.email,
+                        password: param.password,
+                        isAdmin:true
+                    });
+                    newUser.save(function (err) {
+                        if (err) return console.error(err);
+                        console.log('Admin created!');
+                    });
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify({message: 'Admin created!'}));
+                }
+                else {
+                    console.log('Failed to create admin! Wrong admin-secret.');
+                    res.status(500).send(JSON.stringify({message: 'Wrong admin-secret.!'}));
+                }
+            }
+
+            else {
+                console.log('Failed to create admin!');
+                res.status(409).send(JSON.stringify({message: 'Admin already exists!'}));
+            }
+
+        });
+    }
+
     return {
         createUser: createUser,
-        signIn: signIn
+        signIn: signIn,
+        createAdmin: createAdmin
     }
 };
