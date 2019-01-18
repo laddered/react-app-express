@@ -12,7 +12,6 @@ class RegWindow extends Component {
         emailValid: false,
         passwordValid: false,
         passwordConfirmValid: false,
-        submitDisable:true,
         loginMatch:false,
         modalOpen:false
     };
@@ -88,7 +87,6 @@ class RegWindow extends Component {
     };
 
     render(){
-        this.state.submitDisable = !(this.state.loginValid && this.state.emailValid && this.state.passwordValid && this.state.passwordConfirmValid);
         return(
             <div className="reg-window">
                 <Link to='/' className="homeLink"><strong>ReactStore</strong></Link>
@@ -138,7 +136,7 @@ class RegWindow extends Component {
                 <div className={this.state.passwordConfirmValid ? 'input-error-none' : 'input-error' }>Password mismatch</div>
 
                 <button className='submit-btn'
-                        disabled={this.state.submitDisable}
+                        disabled={!(this.state.loginValid && this.state.emailValid && this.state.passwordValid && this.state.passwordConfirmValid)}
                         onClick={this.onSubmit}
                 ><strong>Sign up!</strong></button>
                 <div><Link to='/auth' className="reg-auth-link">I already have an account</Link></div>

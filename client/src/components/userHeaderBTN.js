@@ -16,7 +16,7 @@ class UserHeaderBTN extends Component {
     render(){
         return(
             <React.Fragment>
-            <Link className="sign-in-btn" to='/userEdit'>
+            <Link className="sign-in-btn" to='/editMe'>
                 {this.props.user}
             </Link>
                 <Link onClick={this.deleteToken} className="log-in-btn" to=''>

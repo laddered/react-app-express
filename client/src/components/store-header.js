@@ -8,10 +8,10 @@ import {RegAndAuthzBTN} from "./reg-authzHeaderBTN";
 import {UserHeaderBTN} from "./userHeaderBTN";
 import {ModalCatEdit, ModalCatDelete, ModalProdEdit, ModalProdDelete} from "./modalCat-ProdEdit";
 
-//todo вставить в стейты все модули
 class StoreHeader extends Component {
     state = {
-        user: null,
+        user: false,
+        userName: null,
         data: 'No server connection.',
         token: false,
         admin: false,
@@ -23,6 +23,9 @@ class StoreHeader extends Component {
         prodEditName: '',
         prodEditCat: '',
         prodEditPrice: '',
+        categories: [],
+        subcategories: [],
+        products: []
     };
 
     componentDidMount() {
@@ -30,8 +33,16 @@ class StoreHeader extends Component {
             .then(res => this.setState({data: res.express}))
             .catch(err => console.log(err));
 
+        this.getCategories()
+            .then(res => this.setState({ categories: res }))
+            .catch(err => console.log(err));
+
+        this.getProducts()
+            .then(res => this.setState({ products: res }))
+            .catch(err => console.log(err));
+
         this.findUser()
-            .then(res => this.setState({user: res.login, admin: res.isAdmin}))
+            .then(res => this.setState({userName: res.login, user:true, admin: res.isAdmin}))
             .catch(err => console.log(err));
 
     }
@@ -45,6 +56,36 @@ class StoreHeader extends Component {
             throw Error(body.message);
         }
         return body;
+    };
+
+    getCategories = async () => {
+        const response = await fetch('/store/getCategories');
+        const body = await response.json();
+
+        if (response.status !== 200) {
+            throw Error(body.message)
+        }
+        return body;
+    };
+
+    getProducts = async () => {
+        const response = await fetch('/store/getProducts');
+        const body = await response.json();
+
+        if (response.status !== 200) {
+            throw Error(body.message)
+        }
+        return body;
+    };
+
+    onBodyLoad = (body) => {
+        this.setState({ products: body })
+    };
+
+    clickGetCategories = async () => {
+        this.getProducts()
+            .then(res => this.setState({ products: res }))
+            .catch(err => console.log(err));
     };
 
     findUser = async () => {
@@ -80,44 +121,76 @@ class StoreHeader extends Component {
     };
 
     tokenDelete = ()=>{
-        this.setState({token:false, user:null, admin:false});
+        this.setState({token:false, userName:null, user:false, admin:false});
     };
 
     catEditModalOpen = (catName)=>{
-        this.setState({catEditName:catName});
-        this.setState({catEditModalOpen:true})
+        this.setState({catEditName:catName, catEditModalOpen:true});
     };
 
     catEditModalClose = ()=>{
-        this.setState({catEditName:''});
-        this.setState({catEditModalOpen:false})
+        this.setState({catEditName:'', catEditModalOpen:false});
     };
 
     catDeleteModalOpen = (catName)=>{
-        this.setState({catEditName:catName});
-        this.setState({catEditModalOpen:true})
+        this.setState({catEditName:catName, catDeleteModalOpen:true});
+    };
+
+    catDeleteModalClose = ()=>{
+        this.setState({catEditName:'', catDeleteModalOpen:false});
+    };
+
+    prodEditModalOpen = (prodName, prodCat, prodPrice)=>{
+        this.setState({prodEditName:prodName, prodEditCat:prodCat ,prodEditPrice:prodPrice ,prodEditModalOpen:true});
+    };
+
+    prodEditModalClose = ()=>{
+        this.setState({catEditName:'', prodEditModalOpen:false});
+    };
+
+    prodDeleteModalOpen = (prodName, prodCat, prodPrice)=>{
+        this.setState({prodEditName:prodName, prodEditCat:prodCat ,prodEditPrice:prodPrice ,prodDeleteModalOpen:true});
+    };
+
+    prodDeleteModalClose = ()=>{
+        this.setState({catEditName:'', prodDeleteModalOpen:false});
     };
 
     render() {
-
         let forMainBTNS = null;
         if (this.state.user) {
             forMainBTNS = <UserHeaderBTN
-                user={this.state.user}
+                user={this.state.userName}
                 tokenDelete={this.tokenDelete}/>;
         }
         else {
             forMainBTNS = <RegAndAuthzBTN/>;
         }
 
-        let forModals =null;
+
+        let forModals = null;
         if (this.state.admin) {
             forModals = <React.Fragment>
-
+                <ModalCatEdit catEditModalOpen={this.state.catEditModalOpen}
+                              catEditModalClose={this.catEditModalClose}
+                              catEditName={this.state.catEditName}/>
+                <ModalCatDelete catDeleteModalOpen={this.state.catDeleteModalOpen}
+                                catDeleteModalClose={this.catDeleteModalClose}
+                                catEditName={this.state.catEditName}/>
+                <ModalProdEdit prodEditModalOpen={this.state.prodEditModalOpen}
+                               prodEditModalClose={this.prodEditModalClose}
+                               prodEditName={this.state.prodEditName}
+                               prodEditCat={this.state.prodEditCat}
+                               prodEditPrice={this.state.prodEditPrice}/>
+                <ModalProdDelete prodDeleteModalOpen={this.state.prodDeleteModalOpen}
+                                 prodDeleteModalClose={this.prodDeleteModalClose}
+                                 prodEditName={this.state.prodEditName}
+                                 prodEditCat={this.state.prodEditCat}
+                                 prodEditPrice={this.state.prodEditPrice}/>
             </React.Fragment>;
         }
         else {
-            forMainBTNS = <RegAndAuthzBTN/>;
+            forModals = null;
         }
 
         return (
@@ -130,15 +203,20 @@ class StoreHeader extends Component {
                             <p className="App-intro">{this.state.data}</p>
                             <Route
                                 render={()=><MainColumns admin={this.state.admin}
-                                                         catEditModalOpen={this.catEditModalOpen}/>}
+                                                         catEditModalOpen={this.catEditModalOpen}
+                                                         catDeleteModalOpen={this.catDeleteModalOpen}
+                                                         prodEditModalOpen={this.prodEditModalOpen}
+                                                         prodDeleteModalOpen={this.prodDeleteModalOpen}
+                                                         onBodyLoad={this.onBodyLoad}
+                                                         clickGetCategories={this.clickGetCategories}
+                                                         categories={this.state.categories}
+                                                         subcategories={this.state.subcategories}
+                                                         products={this.state.products}/>}
                                 exact path="/"/>
                             <Route path="/auth" component={AuthzWindow}/>
                             <Route path="/reg" component={RegWindow}/>
                             <Route path="/userEdit" component={EditWindow}/>
-                            <ModalCatEdit catEditModalOpen={this.state.catEditModalOpen}
-                                          catEditName={this.state.catEditName}
-                                          catEditModalClose={this.catEditModalClose}
-                                          token={this.state.token}/>
+                            {forModals}
                         </React.Fragment>
             </div>
         )

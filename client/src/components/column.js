@@ -4,56 +4,6 @@ import {CreateCategoryAndProductBTN} from './createCat-ProdBTN';
 import {Link} from "react-router-dom";
 
 class MainColumns extends Component {
-    state = {
-        categories: [],
-        subcategories: [],
-        products: []
-    };
-
-    onBodyLoad = (body) => {
-        this.setState({ products: body })
-    };
-
-    componentDidMount() {
-
-
-        this.getCategories()
-            .then(res => this.setState({ categories: res }))
-            .catch(err => console.log(err));
-
-        this.getProducts()
-            .then(res => this.setState({ products: res }))
-            .catch(err => console.log(err));
-    }
-
-
-
-    getCategories = async () => {
-        const response = await fetch('/store/getCategories');
-        const body = await response.json();
-
-        if (response.status !== 200) {
-            throw Error(body.message)
-        }
-        return body;
-    };
-
-    getProducts = async () => {
-        const response = await fetch('/store/getProducts');
-        const body = await response.json();
-
-        if (response.status !== 200) {
-            throw Error(body.message)
-        }
-        return body;
-    };
-
-    clickGetCategories = async () => {
-        this.getProducts()
-            .then(res => this.setState({ products: res }))
-            .catch(err => console.log(err));
-    };
-
     render() {
         let forCreateCatAndProdBTN = null;
         if (this.props.admin === true) {
@@ -62,12 +12,13 @@ class MainColumns extends Component {
         return (
             <div className="Main-columns">
                 <div className="Category-column">
-                    <Link onClick={this.clickGetCategories} to='' className='all-cat-link'><p>All category</p></Link>
+                    <Link onClick={this.props.clickGetCategories} to='' className='all-cat-link'><p>All category</p></Link>
                     <CategoryContainer
-                        onBodyLoad={this.onBodyLoad}
-                        data={this.state.categories}
+                        onBodyLoad={this.props.onBodyLoad}
+                        data={this.props.categories}
                         admin={this.props.admin}
                         catEditModalOpen={this.props.catEditModalOpen}
+                        catDeleteModalOpen={this.props.catDeleteModalOpen}
                     />
                     <div className="admin-btns">
                         <div>{forCreateCatAndProdBTN}</div>
@@ -76,8 +27,10 @@ class MainColumns extends Component {
 
                 <div className="Product-column">
                     <ProductContainer
-                        data={this.state.products}
+                        data={this.props.products}
                         admin={this.props.admin}
+                        prodEditModalOpen={this.props.prodEditModalOpen}
+                        prodDeleteModalOpen={this.props.prodDeleteModalOpen}
                     />
                 </div>
             </div>

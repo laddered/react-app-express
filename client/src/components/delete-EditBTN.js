@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {AppContext} from "./appProvider";
 
 class DeleteEditBTNCat extends Component {
 
@@ -9,6 +8,7 @@ class DeleteEditBTNCat extends Component {
     };
 
     openDeleteModal = ()=>{
+        this.props.catDeleteModalOpen(this.props.categoryName)
     };
 
     render() {
@@ -31,15 +31,15 @@ class DeleteEditBTNCat extends Component {
 class DeleteEditBTNProduct extends Component {
 
     openEditModal = ()=>{
+        this.props.prodEditModalOpen(this.props.prodName, this.props.prodCat, this.props.prodPrice)
     };
 
     openDeleteModal = ()=>{
+        this.props.prodDeleteModalOpen(this.props.prodName, this.props.prodCat, this.props.prodPrice)
     };
 
     render() {
         return (
-            <AppContext.Consumer>
-                {(context) =>(
 
             <React.Fragment>
                 <button className='editCatBTN'
@@ -52,8 +52,6 @@ class DeleteEditBTNProduct extends Component {
                 </button>
             </React.Fragment>
 
-                )}
-            </AppContext.Consumer>
         )}
 }
 

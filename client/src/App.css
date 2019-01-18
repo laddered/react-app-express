@@ -174,7 +174,7 @@ a.all-cat-link:link {
     margin-right: 20px;
 }
 
-.submit-btn:disabled {
+.submit-btn:disabled, .submit-btn-inline:disabled {
     background-color: #e1b58e;
 }
 

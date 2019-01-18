@@ -42,11 +42,40 @@ module.exports = function (app) {
     }
 
     function editProduct(req, res){
-
+        User.findById(req.decodedWT.id, (err, user)=>{
+            if (user.isAdmin){
+                Product.find({productName:req.body.newProdName}, (err, product)=>{
+                    if (product.length) {res.send({resCode:'3', message:'Already have a product with this name!'})}
+                    else {
+                        Product.findOneAndUpdate({productName:req.body.oldProdName}, {productName:req.body.newProdName}, {upsert:false}, function (err, doc){
+                            if(req.body.newProdCat !== ''){
+                                Product.findOneAndUpdate({productName:req.body.newProdName}, {productCategory:req.body.newProdCat}, {upsert:false}, function (err, doc){})
+                            }
+                            if(req.body.newProdPrice !== ''){
+                                Product.findOneAndUpdate({productName:req.body.newProdName}, {productPrice:req.body.newProdPrice}, {upsert:false}, function (err, doc){})
+                            }
+                            res.send({resCode:'2', message:'The product has been successfully modified!'})
+                        });
+                    }
+                })
+            }
+            else {
+                res.send({resCode:'4', message:'User is not admin!'})
+            }
+        });
     }
 
     function deleteProduct(req, res){
-
+        User.findById(req.decodedWT.id, (err, user)=>{
+            if (user.isAdmin){
+                Product.findOneAndDelete({productName:req.body.prodName}, {}, function (err, doc) {
+                    res.send({resCode:'2', message:'Product was successfully removed!'})
+                })
+            }
+            else {
+                res.send({resCode:'4', message:'User is not admin!'})
+            }
+        })
     }
 
     function createCategory(req, res){
@@ -73,14 +102,30 @@ module.exports = function (app) {
     }
 
     function editCategory(req, res){
-        User.findById(req.decodedWT, (err, user)=>{
+        User.findById(req.decodedWT.id, (err, user)=>{
             if (user.isAdmin){
-
-                Category.find({categoryName:req.body.oldCatName}, (err, category)=>{
-                    if(category){res.status(409).send()}
+                Category.find({categoryName:req.body.newCatName}, (err, category)=>{
+                    if (category.length) {res.send({resCode:'3', message:'Already have a category with this name!'})}
                     else {
-
+                        console.log(req.body);
+                        Category.findOneAndUpdate({categoryName:req.body.oldCatName}, {categoryName:req.body.newCatName}, {upsert:false}, function (err, doc){
+                            res.send({resCode:'2', message:'The product has been successfully modified!'})
+                        });
                     }
+                })
+            }
+            else {
+                res.send({resCode:'4', message:'User is not admin!'})
+            }
+        });
+    }
+
+    function deleteCategory(req, res){
+        User.findById(req.decodedWT.id, (err, user)=>{
+            console.log('ВОООООООООт здесь');
+            if (user.isAdmin){
+                Category.findOneAndRemove({categoryName:req.body.catName}, function (err, doc){
+                    res.send({data:'YEEEES!'})
                 })
             }
             else {
@@ -88,8 +133,6 @@ module.exports = function (app) {
             }
         });
     }
-
-    function deleteCategory(req, res){}
 
     return {
         createProduct: createProduct,

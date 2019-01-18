@@ -4,9 +4,10 @@ module.exports = function(app){
     let userCtrl = require('../controllers/user')(app);
     let tokenCheck = require('../tokenCheck');
 
-    userRouter.get('/getMe', userCtrl.getMe);
+    userRouter.post('/getMe', tokenCheck, userCtrl.getMe);
     userRouter.post('/getMyLogin', tokenCheck, userCtrl.getMyLogin);
     userRouter.post('/editMe', userCtrl.editMe);
+    userRouter.post('/editMyPassword', userCtrl.editMyPassword);
     userRouter.delete('/deleteMe', userCtrl.deleteMe);
 
     return userRouter;

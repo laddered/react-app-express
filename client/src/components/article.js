@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import {DeleteEditBTNCat, DeleteEditBTNProduct} from "./delete-EditBTN";
-import {AppContext} from "./appProvider";
 
 class CategoryContainer extends Component {
 
     componentDidMount() {}
     render() {
-        let data = this.props.data;
-        let categoryTemplate;
+        let data = this.props.data,
+            categoryTemplate;
 
         if (data.length > 0) {
             categoryTemplate = data.map((item, index) => {
@@ -16,18 +15,13 @@ class CategoryContainer extends Component {
                     <div className="category-container"
                          key={index}>
 
-                        <AppContext.Consumer>
-                            {(context) =>(
-
                         <CategoryArticle
                             onBodyLoad={this.props.onBodyLoad}
                             data={item}
                             admin={this.props.admin}
                             catEditModalOpen={this.props.catEditModalOpen}
+                            catDeleteModalOpen={this.props.catDeleteModalOpen}
                         />
-
-                            )}
-                        </AppContext.Consumer>
 
                     </div>
                 )
@@ -47,9 +41,12 @@ class ProductContainer extends Component {
 
     componentDidMount() {}
     render() {
-        let data = this.props.data;
-        let admin = this.props.admin;
-        let productTemplate;
+        let data = this.props.data,
+            admin = this.props.admin,
+            prodEditModalOpen = this.props.prodEditModalOpen,
+            prodDeleteModalOpen = this.props.prodDeleteModalOpen,
+            productTemplate,
+            forNoProductStyle = {textAlign:'center'};
         if (data.length > 0) {
             productTemplate = data.map(function (item, index) {
                 return(
@@ -57,12 +54,14 @@ class ProductContainer extends Component {
                         <ProductArticle
                             data={item}
                             admin={admin}
+                            prodEditModalOpen={prodEditModalOpen}
+                            prodDeleteModalOpen={prodDeleteModalOpen}
                         />
                     </div>
                 )
             })
         }
-        else {productTemplate = <p>No product!</p>}
+        else {productTemplate = <p style={forNoProductStyle}>No product!</p>}
 
         return (
             <React.Fragment>
@@ -101,7 +100,8 @@ render() {
         forDeleteEditBTN = null;
     if (this.props.admin === true) {
         forDeleteEditBTN = <DeleteEditBTNCat catEditModalOpen={this.props.catEditModalOpen}
-                                             categoryName={this.props.data.categoryName}/>
+                                             categoryName={this.props.data.categoryName}
+                                             catDeleteModalOpen={this.props.catDeleteModalOpen}/>
     }
     return(
         <React.Fragment>
@@ -122,7 +122,11 @@ class ProductArticle extends Component {
             productPrice = this.props.data.productPrice,
                 forDeleteEditBTN = null;
         if (this.props.admin === true) {
-            forDeleteEditBTN = <DeleteEditBTNProduct/>}
+            forDeleteEditBTN = <DeleteEditBTNProduct prodEditModalOpen={this.props.prodEditModalOpen}
+                                                     prodName={productName}
+                                                     prodCat={productCategory}
+                                                     prodPrice={productPrice}
+                                                     prodDeleteModalOpen={this.props.prodDeleteModalOpen}/>}
         return (
             <React.Fragment>
                 <p className ='product__name'>{productName}</p>
