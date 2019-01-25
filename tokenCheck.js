@@ -1,6 +1,6 @@
 function tokenCheck(req, res, next) {
+    console.log(req.body);
     let token = req.body.token;
-    console.log(token);
     let jwt = require('jsonwebtoken');
     let configWT = require('././configWebTokensJSON');
 

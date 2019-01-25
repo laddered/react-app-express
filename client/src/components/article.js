@@ -4,7 +4,6 @@ import {DeleteEditBTNCat, DeleteEditBTNProduct} from "./delete-EditBTN";
 
 class CategoryContainer extends Component {
 
-    componentDidMount() {}
     render() {
         let data = this.props.data,
             categoryTemplate;
@@ -14,7 +13,6 @@ class CategoryContainer extends Component {
                 return (
                     <div className="category-container"
                          key={index}>
-
                         <CategoryArticle
                             onBodyLoad={this.props.onBodyLoad}
                             data={item}
@@ -22,13 +20,11 @@ class CategoryContainer extends Component {
                             catEditModalOpen={this.props.catEditModalOpen}
                             catDeleteModalOpen={this.props.catDeleteModalOpen}
                         />
-
                     </div>
                 )
             })
         }
         else {categoryTemplate = <p>No categories!</p>}
-
         return (
             <React.Fragment>
                 {categoryTemplate}
@@ -39,7 +35,6 @@ class CategoryContainer extends Component {
 
 class ProductContainer extends Component {
 
-    componentDidMount() {}
     render() {
         let data = this.props.data,
             admin = this.props.admin,
@@ -62,7 +57,6 @@ class ProductContainer extends Component {
             })
         }
         else {productTemplate = <p style={forNoProductStyle}>No product!</p>}
-
         return (
             <React.Fragment>
                 {productTemplate}
@@ -72,8 +66,8 @@ class ProductContainer extends Component {
 }
 
 class CategoryArticle extends Component {
-    getSpecificProduct = async () => {
 
+    getSpecificProduct = async () => {
         let categoryName = this.props.data.categoryName;
         const response = await fetch('/store/getSpecificProducts', {
             method: "POST",
@@ -103,6 +97,7 @@ render() {
                                              categoryName={this.props.data.categoryName}
                                              catDeleteModalOpen={this.props.catDeleteModalOpen}/>
     }
+
     return(
         <React.Fragment>
             <Link className ='category__name' to=''
@@ -115,6 +110,7 @@ render() {
 }
 
 class ProductArticle extends Component {
+
     render(){
             let productName = this.props.data.productName,
             productCategory = this.props.data.productCategory,
@@ -127,6 +123,7 @@ class ProductArticle extends Component {
                                                      prodCat={productCategory}
                                                      prodPrice={productPrice}
                                                      prodDeleteModalOpen={this.props.prodDeleteModalOpen}/>}
+
         return (
             <React.Fragment>
                 <p className ='product__name'>{productName}</p>

@@ -6,7 +6,7 @@ module.exports = function(app){
 
     userRouter.post('/getMe', tokenCheck, userCtrl.getMe);
     userRouter.post('/getMyLogin', tokenCheck, userCtrl.getMyLogin);
-    userRouter.post('/editMe', userCtrl.editMe);
+    userRouter.post('/editMe', tokenCheck, userCtrl.editMe);
     userRouter.post('/editMyPassword', userCtrl.editMyPassword);
     userRouter.delete('/deleteMe', userCtrl.deleteMe);
 

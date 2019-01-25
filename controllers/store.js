@@ -1,24 +1,105 @@
 module.exports = function (app) {
 
-    let bodyParser = require('body-parser'),
-    Product = require('./../models/product'),
+    let Product = require('./../models/product'),
     Category = require('./../models/category'),
     User = require('./../models/user');
 
+    function createCategory(req, res){
+
+        User.findById(req.decodedWT.id, (err, user)=>{
+            if (user.isAdmin){
+                Category.find({categoryName:req.body.newCatName}, (err, category)=>{
+                    if (category.length) {res.send({resCode:'3', message:'Already have a category with this name!'})}
+                    else {
+                        let newCategory = Category({
+                            categoryName: req.body.newCatName
+                        });
+                        newCategory.save(function (err) {
+                            if (err) return console.error(err);
+                            console.log('Category '+req.body.newCatName+' created!');
+                        });
+                        res.send({resCode:'2', message:'The category has been successfully created!'});
+                    }
+                });
+            }
+            else {
+                res.send({resCode:'4', message:'User is not admin!'})
+            }
+        });
+
+    }
+
+    function getCategories(req, res){
+
+        Category.find({}, function (err, category) {
+            if (err) {console.error(err)}
+            else {
+                res.send(category);
+                console.log('Categories send!')
+            }
+        })
+    }
+
+    function editCategory(req, res){
+        User.findById(req.decodedWT.id, (err, user)=>{
+            if (user.isAdmin){
+                Category.find({categoryName:req.body.newCatName}, (err, category)=>{
+                    if (category.length) {res.send({resCode:'3', message:'Already have a category with this name!'})}
+                    else {
+                        Category.findOneAndUpdate({categoryName:req.body.oldCatName}, {categoryName:req.body.newCatName}, {upsert:false}, function (err, doc){
+                            res.send({resCode:'2', message:'The product has been successfully modified!'})
+                        });
+                    }
+                })
+            }
+            else {
+                res.send({resCode:'4', message:'User is not admin!'})
+            }
+        });
+    }
+
+    function deleteCategory(req, res){
+        User.findById(req.decodedWT.id, (err, user)=>{
+            if (user.isAdmin){
+                Category.findOneAndRemove({categoryName:req.body.catName}, function (err, doc){
+                    res.send({resCode:'2', message:'Category was successfully removed!'})
+                })
+            }
+            else {
+                res.status(501).send('User is not admin!')
+            }
+        });
+    }
+
     function createProduct(req, res){
 
-        let newProduct = Product({
-                        productName: 'productName',
-                        productCategory: 'productCategory',
-                        productSubcategory: 'productSubcategory',
-                        productPrice: '0'
-                    });
-        newProduct.save(function (err) {
-                        if (err) return console.error(err);
-                        console.log('Product created!');
-                    });
-                    res.send({mes:'Product created!'});
-                }
+        User.findById(req.decodedWT.id, (err, user)=>{
+            if (user.isAdmin){
+                Product.find({productName:req.body.newProdName}, (err, product)=>{
+                    if (product.length) {res.send({resCode:'3', message:'Already have a product with this name!'})}
+                    else {
+                            let newProduct = Product({
+                                productName: req.body.newProdName,
+                                productCategory: req.body.newProdCat,
+                                productSubcategory: 'productSubcategory',
+                                productPrice: req.body.newProdPrice
+                            });
+                            newProduct.save(function (err) {
+                                if (err) return console.error(err);
+                                console.log('Product '+req.body.newProdName+' created!');
+                            });
+                        res.send({resCode:'2', message:'The product has been successfully created!'})
+                    }
+                })
+            }
+            else {
+                res.send({resCode:'4', message:'User is not admin!'})
+            }
+        });
+
+
+
+    }
 
     function getProducts(req, res){
 
@@ -42,20 +123,24 @@ module.exports = function (app) {
     }
 
     function editProduct(req, res){
+        let setName;
         User.findById(req.decodedWT.id, (err, user)=>{
             if (user.isAdmin){
                 Product.find({productName:req.body.newProdName}, (err, product)=>{
                     if (product.length) {res.send({resCode:'3', message:'Already have a product with this name!'})}
                     else {
-                        Product.findOneAndUpdate({productName:req.body.oldProdName}, {productName:req.body.newProdName}, {upsert:false}, function (err, doc){
+                        if (req.body.newProdName === '') {setName = req.body.oldProdName}
+                        else {setName = req.body.newProdName}
+
+                        Product.findOneAndUpdate({productName:req.body.oldProdName}, {productName:setName}, {upsert:false}, function (err, doc){
                             if(req.body.newProdCat !== ''){
-                                Product.findOneAndUpdate({productName:req.body.newProdName}, {productCategory:req.body.newProdCat}, {upsert:false}, function (err, doc){})
+                                Product.findOneAndUpdate({productName:setName}, {productCategory:req.body.newProdCat}, {upsert:false}, function (err, doc){})
                             }
                             if(req.body.newProdPrice !== ''){
-                                Product.findOneAndUpdate({productName:req.body.newProdName}, {productPrice:req.body.newProdPrice}, {upsert:false}, function (err, doc){})
+                                Product.findOneAndUpdate({productName:setName}, {productPrice:req.body.newProdPrice}, {upsert:false}, function (err, doc){})
                             }
-                            res.send({resCode:'2', message:'The product has been successfully modified!'})
                         });
+                        res.send({resCode:'2', message:'The product has been successfully modified!'})
                     }
                 })
             }
@@ -76,62 +161,6 @@ module.exports = function (app) {
                 res.send({resCode:'4', message:'User is not admin!'})
             }
         })
-    }
-
-    function createCategory(req, res){
-
-        let newCategory = Category({
-            categoryName: 'categoryName'
-        });
-        newCategory.save(function (err) {
-            if (err) return console.error(err);
-            console.log('Category created!');
-        });
-        res.send({data:'Category created!'});
-    }
-
-    function getCategories(req, res){
-
-        Category.find({}, function (err, category) {
-            if (err) {console.error(err)}
-            else {
-                res.send(category);
-                console.log('Categories send!')
-            }
-        })
-    }
-
-    function editCategory(req, res){
-        User.findById(req.decodedWT.id, (err, user)=>{
-            if (user.isAdmin){
-                Category.find({categoryName:req.body.newCatName}, (err, category)=>{
-                    if (category.length) {res.send({resCode:'3', message:'Already have a category with this name!'})}
-                    else {
-                        console.log(req.body);
-                        Category.findOneAndUpdate({categoryName:req.body.oldCatName}, {categoryName:req.body.newCatName}, {upsert:false}, function (err, doc){
-                            res.send({resCode:'2', message:'The product has been successfully modified!'})
-                        });
-                    }
-                })
-            }
-            else {
-                res.send({resCode:'4', message:'User is not admin!'})
-            }
-        });
-    }
-
-    function deleteCategory(req, res){
-        User.findById(req.decodedWT.id, (err, user)=>{
-            console.log('ВОООООООООт здесь');
-            if (user.isAdmin){
-                Category.findOneAndRemove({categoryName:req.body.catName}, function (err, doc){
-                    res.send({data:'YEEEES!'})
-                })
-            }
-            else {
-                res.status(501).send('User is not admin!')
-            }
-        });
     }
 
     return {

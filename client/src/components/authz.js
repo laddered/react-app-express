@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 
-//todo авторизация тут
 class AuthzWindow extends Component {
+
     state = {
         login: '',
         password: '',
@@ -61,6 +61,7 @@ class AuthzWindow extends Component {
                 throw Error(body.message);
         }
     };
+
     render(){
         return(
             <div className="authz-window">

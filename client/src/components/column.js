@@ -4,11 +4,14 @@ import {CreateCategoryAndProductBTN} from './createCat-ProdBTN';
 import {Link} from "react-router-dom";
 
 class MainColumns extends Component {
+
     render() {
         let forCreateCatAndProdBTN = null;
         if (this.props.admin === true) {
-            forCreateCatAndProdBTN = <CreateCategoryAndProductBTN/>;
+            forCreateCatAndProdBTN = <CreateCategoryAndProductBTN catCreateModalOpen={this.props.catCreateModalOpen}
+                                                                  prodCreateModalOpen={this.props.prodCreateModalOpen}/>;
         }
+
         return (
             <div className="Main-columns">
                 <div className="Category-column">

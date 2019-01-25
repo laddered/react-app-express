@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 class DeleteEditBTNCat extends Component {
 
-
     openEditModal = ()=>{
         this.props.catEditModalOpen(this.props.categoryName)
     };
@@ -13,7 +12,6 @@ class DeleteEditBTNCat extends Component {
 
     render() {
         return (
-
                     <React.Fragment>
                         <button className='editCatBTN'
                                 onClick={this.openEditModal}>
@@ -24,7 +22,6 @@ class DeleteEditBTNCat extends Component {
                             Delete
                         </button>
                     </React.Fragment>
-
         )}
 }
 
@@ -40,7 +37,6 @@ class DeleteEditBTNProduct extends Component {
 
     render() {
         return (
-
             <React.Fragment>
                 <button className='editCatBTN'
                         onClick={this.openEditModal}>
@@ -51,7 +47,6 @@ class DeleteEditBTNProduct extends Component {
                     Delete
                 </button>
             </React.Fragment>
-
         )}
 }
 

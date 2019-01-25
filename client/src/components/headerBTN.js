@@ -1,12 +1,22 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 
-class UserHeaderBTN extends Component {
-
-    state = {
-        user: null,
-        token: false
+class RegAndAuthzBTN extends Component {
+    render(){
+        return(
+            <React.Fragment>
+                <Link className="sign-in-btn" to='/reg'>
+                    Sign up
+                </Link>
+                <Link className="log-in-btn" to='/auth'>
+                    Log in
+                </Link>
+            </React.Fragment>
+        );
     };
+}
+
+class UserHeaderBTN extends Component {
 
     deleteToken = ()=>{
         localStorage.removeItem('tokenReactStore');
@@ -27,4 +37,4 @@ class UserHeaderBTN extends Component {
     };
 }
 
-export {UserHeaderBTN};
+export {RegAndAuthzBTN, UserHeaderBTN};

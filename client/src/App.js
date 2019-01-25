@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {StoreHeader} from "./components/store-header";
+import {StoreHeader} from "./components/storeHeader";
 import {Route} from "react-router-dom";
 import {AuthzWindow} from "./components/authz";
 import {RegWindow} from "./components/reg";

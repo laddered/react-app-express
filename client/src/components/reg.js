@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import ReactModal from 'react-modal';
 
 class RegWindow extends Component {
+
     state = {
         login: '',
         email: '',
